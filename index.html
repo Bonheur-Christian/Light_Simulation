@@ -8,70 +8,96 @@
     <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Arial', sans-serif;
             text-align: center;
-            margin-top: 50px;
-            background-color: #f5f5dc; /* Light brown background */
+            margin: 0;
+            padding: 50px 20px;
             color: #333;
         }
 
         h1 {
-            color: #4caf50;
+            font-size: 2.5em;
+            color: #2E7D32;
             margin-bottom: 20px;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+        }
+
+        .button-container {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 20px;
         }
 
         button {
-            font-size: 20px;
-            padding: 15px 30px;
-            margin: 10px;
+            font-size: 18px;
+            padding: 12px 30px;
             cursor: pointer;
             border: none;
             border-radius: 5px;
-            transition: background-color 0.3s, transform 0.2s;
+            font-weight: bold;
+            transition: all 0.3s ease;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
 
         #onBtn {
-            background-color: #4caf50; /* Green for ON button */
+            background: #2E7D32;
             color: white;
         }
 
         #onBtn:hover {
-            background-color: #45a049;
-            transform: translateY(-2px);
+            background: #1B5E20;
+            transform: scale(1.05);
         }
 
         #offBtn {
-            background-color: #f44336; /* Red for OFF button */
+            background: #D32F2F;
             color: white;
         }
 
         #offBtn:hover {
-            background-color: #d32f2f;
-            transform: translateY(-2px);
+            background: #B71C1C;
+            transform: scale(1.05);
         }
 
         h2 {
             margin-top: 30px;
+            font-size: 1.8em;
             color: #555;
         }
 
         #status {
-            font-size: 18px;
-            margin-top: 10px;
-            padding: 10px;
-            border: 1px solid #4caf50;
+            font-size: 20px;
+            margin-top: 15px;
+            padding: 12px 25px;
             border-radius: 5px;
-            background-color: #e8f5e9;
+            background-color: #f1f1f1;
+            color: #2E7D32;
             display: inline-block;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        #status.on {
+            background-color: #C8E6C9;
+            color: #2E7D32;
+            transform: scale(1.05);
+        }
+
+        #status.off {
+            background-color: #FFCDD2;
+            color: #B71C1C;
+            transform: scale(1.05);
         }
     </style>
 </head>
 
 <body>
     <h1>MQTT Light Control</h1>
-    <button id="onBtn">Turn ON</button>
-    <button id="offBtn">Turn OFF</button>
+    <div class="button-container">
+        <button id="onBtn">Turn ON</button>
+        <button id="offBtn">Turn OFF</button>
+    </div>
     <h2>Status Of The Light</h2>
     <p id="status">Waiting...</p>
 
@@ -87,7 +113,9 @@
 
         function publishMessage(message) {
             client.publish(topic, message);
-            document.getElementById("status").innerText = `Light is Turned: ${message}`;
+            const statusElement = document.getElementById("status");
+            statusElement.innerText = `Light is Turned: ${message}`;
+            statusElement.className = message === "ON" ? "on" : "off";
         }
 
         document.getElementById("onBtn").addEventListener("click", () => publishMessage("ON"));
