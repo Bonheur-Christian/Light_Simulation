@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MQTT Light Control</title>
+    <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+            background-color: #f0f8ff;
+            color: #333;
+        }
+
+        h1 {
+            color: #4caf50;
+            margin-bottom: 20px;
+        }
+
+        button {
+            font-size: 20px;
+            padding: 15px 30px;
+            margin: 10px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            background-color: #4caf50;
+            color: white;
+            transition: background-color 0.3s, transform 0.2s;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        button:hover {
+            background-color: #45a049;
+            transform: translateY(-2px);
+        }
+
+        h2 {
+            margin-top: 30px;
+            color: #555;
+        }
+
+        #status {
+            font-size: 18px;
+            margin-top: 10px;
+            padding: 10px;
+            border: 1px solid #4caf50;
+            border-radius: 5px;
+            background-color: #e8f5e9;
+            display: inline-block;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>MQTT Light Control</h1>
+    <button id="onBtn">Turn ON</button>
+    <button id="offBtn">Turn OFF</button>
+    <h2>Status Of The Light</h2>
+    <p id="status">Waiting...</p>
+
+    <script>
+        const broker = "ws://157.173.101.159:9001";
+        const topic = "/student_group/light_control";
+
+        const client = mqtt.connect(broker);
+
+        client.on("connect", function () {
+            console.log("Connected to MQTT broker");
+        });
+
+        function publishMessage(message) {
+            client.publish(topic, message);
+            document.getElementById("status").innerText = `Light is Turned: ${message}`;
+        }
+
+        document.getElementById("onBtn").addEventListener("click", () => publishMessage("ON"));
+        document.getElementById("offBtn").addEventListener("click", () => publishMessage("OFF"));
+    </script>
+</body>
+
+</html>
