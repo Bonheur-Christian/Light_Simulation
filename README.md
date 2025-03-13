@@ -13,4 +13,4 @@ This is a simple web-based MQTT light control system that allows users to turn a
 ```sh
 python light_simulation.py
 ```
-### 2. Open `index.html` file in Browser to stimulate user interface
+### 2. Open `index.html` file in Browser to simulate user interface
